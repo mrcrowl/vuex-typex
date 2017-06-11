@@ -4,12 +4,7 @@ import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store } fr
 const useRootNamespace = { root: true }
 
 export type MutationHandler<S, P> = (state: S, payload: P) => void
-// export type PayloadlessMutationHandler<S> = (state: S) => void
-
 export type ActionHandler<S, R, P, T> = (context: BareActionContext<S, R>, payload: P) => Promise<T>
-// export type PayloadlessActionHandler<S, R, T> = (context: BareActionContext<S, R>) => Promise<T>
-// export type VoidActionHandler<S, R, P> = (context: BareActionContext<S, R>, payload: P) => void
-// export type VoidPayloadlessActionHandler<S, R> = (context: BareActionContext<S, R>) => void
 export type GetterHandler<S, R, T> = (state: S, rootState: R) => T
 
 export interface BareActionContext<S, R>
@@ -34,9 +29,11 @@ export class ModuleBuilder<S, R> {
 
     commit<P>(handler: MutationHandler<S, void>): () => void
     commit<P>(handler: MutationHandler<S, P>): (payload: P) => void
-    commit<P>(handler: MutationHandler<S, P>)
+    commit<P>(handler: MutationHandler<S, void>, name: string): () => void
+    commit<P>(handler: MutationHandler<S, P>, name: string): (payload: P) => void
+    commit<P>(handler: MutationHandler<S, P>, name?: string)
     {
-        const key = qualifyKey(handler, this.namespace)
+        const key = qualifyKey(handler, this.namespace, name)
         return ((payload: P) => this.store.commit(key, payload, useRootNamespace)) as any
     }
 
@@ -44,9 +41,13 @@ export class ModuleBuilder<S, R> {
     dispatch<P, T>(handler: ActionHandler<S, R, P, void>): (payload: P) => Promise<void>
     dispatch<P, T>(handler: ActionHandler<S, R, void, T>): () => Promise<T>
     dispatch<P, T>(handler: ActionHandler<S, R, P, T>): (payload: P) => Promise<T>
-    dispatch<P, T>(handler: any): any
+    dispatch<P, T>(handler: ActionHandler<S, R, void, void>, name: string): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, P, void>, name: string): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, void, T>, name: string): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, P, T>, name: string): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: any, name?: string): any
     {
-        const key = qualifyKey(handler, this.namespace)
+        const key = qualifyKey(handler, this.namespace, name)
         return (payload: P) => this.store.dispatch(key, payload, useRootNamespace)
     }
 
