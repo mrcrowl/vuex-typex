@@ -1,0 +1,50 @@
+{
+    "name": "vuex-ts-builder",
+    "version": "1.0.0",
+    "description": "Typescript builder for Vuex Store modules",
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts"
+    ],
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "dependencies": {
+        "vuex": "^2.3.1"
+    },
+    "devDependencies": {
+        "@types/chai": "^3.4.35",
+        "@types/chai-http": "^0.0.30",
+        "@types/mocha": "^2.2.40",
+        "chai": "^3.5.0",
+        "mocha": "^3.2.0",
+        "nyc": "^10.1.2",
+        "rimraf": "^2.6.1",
+        "typescript": "^2.2.1",
+        "vue": "^2.3.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mrcrowl/vuex-ts-builder.git"
+    },
+    "keywords": [
+        "vuex",
+        "typescript",
+        "builder"
+    ],
+    "author": "mrcrowl",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/mrcrowl/vuex-ts-builder/issues"
+    },
+    "homepage": "https://github.com/mrcrowl/vuex-ts-builder#readme",
+    "scripts": {
+        "clean": "rimraf dist && rimraf coverage",
+        "compile": "tsc --pretty",
+        "build": "npm run clean && npm run lint-force && npm run compile",
+        "test": "npm run coverage",
+        "test-only": "mocha --recursive dist/**/*.spec.js",
+        "test-watch": "npm run test-only -- --watch",
+        "test-debug": "mocha --debug-brk --debug=0.0.0.0:5858 dist/**/*.spec.js",
+        "coverage": "rimraf coverage && nyc --reporter=html --reporter=text --reporter=lcov -x **/*.spec.js npm run test-only"
+    }
+}

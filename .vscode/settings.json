@@ -1,0 +1,9 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+    "tsimporter.emitSemicolon": false,
+    "tsimporter.filesToExclude": [
+        "./dist/**/*"
+    ]
+}

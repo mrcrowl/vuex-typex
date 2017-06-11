@@ -1,0 +1,7 @@
+node_modules/**/*
+coverage/**/*
+.nyc_output/**/*
+npm-debug.log
+src/**/*.js
+src/**/*.js.map
+dist/**
