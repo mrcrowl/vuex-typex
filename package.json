@@ -1,7 +1,7 @@
 {
     "name": "vuex-ts-builder",
     "version": "1.0.0",
-    "description": "Typescript builder for Vuex Store modules",
+    "description": "Typescript builder for strongly-typed access to Vuex Store modules",
     "files": [
         "dist/index.js",
         "dist/index.d.ts"
