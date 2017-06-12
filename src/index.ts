@@ -4,7 +4,7 @@ import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store } fr
 const useRootNamespace = { root: true }
 
 export type MutationHandler<S, P> = (state: S, payload: P) => void
-export type ActionHandler<S, R, P, T> = (context: BareActionContext<S, R>, payload: P) => Promise<T>
+export type ActionHandler<S, R, P, T> = (context: BareActionContext<S, R>, payload: P) => Promise<T> | T
 export type GetterHandler<S, R, T> = (state: S, rootState: R) => T
 
 export interface BareActionContext<S, R>

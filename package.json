@@ -1,7 +1,7 @@
 {
-    "name": "vuex-ts-builder",
+    "name": "vuex-typex",
     "version": "1.0.0",
-    "description": "Typescript builder for strongly-typed access to Vuex Store modules",
+    "description": "A TypeScript pattern for strongly-typed access to Vuex Store modules",
     "files": [
         "dist/index.js",
         "dist/index.d.ts"
@@ -24,7 +24,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mrcrowl/vuex-ts-builder.git"
+        "url": "git+https://github.com/mrcrowl/vuex-typex.git"
     },
     "keywords": [
         "vuex",
@@ -34,9 +34,9 @@
     "author": "mrcrowl",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/mrcrowl/vuex-ts-builder/issues"
+        "url": "https://github.com/mrcrowl/vuex-typex/issues"
     },
-    "homepage": "https://github.com/mrcrowl/vuex-ts-builder#readme",
+    "homepage": "https://github.com/mrcrowl/vuex-typex#readme",
     "scripts": {
         "clean": "rimraf dist && rimraf coverage",
         "compile": "tsc --pretty",

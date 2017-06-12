@@ -3,39 +3,54 @@ import { ModuleBuilder } from "../../.."
 import { BirthdayState, Birthday } from "./state"
 import { Module } from "vuex"
 import { RootState } from "../root"
+import * as Vuex from "vuex"
+import removeFirstAfter from "../../../../dist/tests/store/birthday/actions/removeFirstAfter"
 
 const initialState: BirthdayState = {
     birthdays: [
         {
-            name: "Jacob",
-            dob: new Date(2006, 10, 11)
+            name: "Richard",
+            dob: new Date(1995, 10, 11)
         },
         {
-            name: "Danny",
-            dob: new Date(2009, 11, 30)
+            name: "Erlich",
+            dob: new Date(1983, 1, 17)
+        },
+        {
+            name: "Nelson",
+            dob: new Date(1996, 3, 28)
+        },
+        {
+            name: "Dinesh",
+            dob: new Date(1989, 1, 7)
+        },
+        {
+            name: "Bertram",
+            dob: new Date(1985, 7, 14)
+        },
+        {
+            name: "Donald",
+            dob: new Date(1994, 5, 31)
+        },
+        {
+            name: "Monica",
+            dob: new Date(1996, 8, 26)
         }
     ]
 }
 
-const builder = new ModuleBuilder<BirthdayState, RootState>("birthday", initialState)
+const m = new ModuleBuilder<BirthdayState, RootState>("birthday", initialState)
 
-const commitAddBirthday = builder.commit((state, payload: { birthday: Birthday }) =>
-{
-    state.birthdays.push(payload.birthday)
-})
+const addBirthdayMut = (state: BirthdayState, payload: { birthday: Birthday }) => state.birthdays.push(payload.birthday)
+const removeFirstBirthdayMut = (state: BirthdayState) => state.birthdays.shift()
 
-const commitRemoveFirstBirthday = builder.commit((state) =>
-{
-    state.birthdays.shift()
-})
-
-const getOldestName = builder.read((state): Birthday | undefined =>
+const oldestNameGetter = m.read((state): Birthday | undefined =>
 {
     const sortedBirthdays = (<Birthday[]>[]).sort((a, b) => a.dob.getTime() - b.dob.getTime())
     return sortedBirthdays[0]
-})
+}, "oldestName")
 
-const getDOBforName = builder.read((state) => (name: string) => 
+const dateOfBirthForMethod = m.read((state) => (name: string) => 
 {
     const matches = state.birthdays.filter(b => b.name === name)
     if (matches.length)
@@ -46,33 +61,23 @@ const getDOBforName = builder.read((state) => (name: string) =>
     return
 }, "dob")
 
-const dispatchRemoveFirstAfter = builder.dispatch(async (context, delay: number) =>
-{
-    if (context.state.birthdays.length > 2)
-    {
-        await new Promise((resolve, _) => setTimeout(resolve, 1000)); // second delay
-        commitRemoveFirstBirthday()
-    }
-})
-
-const module = {
+const birthday = {
     // getters + methods
-    get oldestName() { return getOldestName() },
-    dateOfBirthFor(name: string) { return getDOBforName()(name) },
+    get oldestName() { return oldestNameGetter() },
+    dateOfBirthFor(name: string) { return dateOfBirthForMethod()(name) },
 
     // mutations    
-    commitAddBirthday,
-    commitRemoveFirstBirthday,
+    commitAddBirthday: m.commit(addBirthdayMut),
+    commitRemoveFirstBirthday: m.commit(removeFirstBirthdayMut),
 
     // actions
-    dispatchRemoveFirstAfter,
+    dispatchRemoveFirstAfter: m.dispatch(removeFirstAfter)
 }
 
-module.commitAddBirthday({ birthday: { dob: new Date(1980, 2, 3), name: "Louise" } })
-module.commitRemoveFirstBirthday()
-module.dateOfBirthFor("Louise")
-module.dispatchRemoveFirstAfter(1000)
+// birthday.commitAddBirthday({ birthday: { dob: new Date(1980, 2, 3), name: "Louise" } })
+// birthday.commitRemoveFirstBirthday()
+// birthday.dateOfBirthFor("Louise")
+// birthday.dispatchRemoveFirstAfter(1000)
 
-export default module
-
-export const vuexModule: Module<BirthdayState, RootState> = builder.toVuexModule()
+export default birthday
+export const birthdayModule: Module<BirthdayState, RootState> = m.toVuexModule()

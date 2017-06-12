@@ -3,7 +3,8 @@
     "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
     "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
     "tsimporter.emitSemicolon": false,
+    "tsimporter.noStatusBar": false,
     "tsimporter.filesToExclude": [
-        "./dist/**/*"
+        "./dist/**"
     ]
 }
