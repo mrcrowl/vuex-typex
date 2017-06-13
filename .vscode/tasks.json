@@ -2,12 +2,16 @@
   "version": "0.1.0",
   "command": "npm",
   "isShellCommand": true,
-  "args": ["run"],
+  "args": [
+    "run"
+  ],
   "showOutput": "always",
   "tasks": [
     {
       "taskName": "build",
-      "isBuildCommand": true
+      "isBuildCommand": true,
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch"
     },
     // {
     //   "taskName": "clean"

@@ -11,7 +11,7 @@ export interface RootState
     birthday: BirthdayState
 }
 
-export const createStore = new Store({
+export const createStore = () => new Store<RootState>({
     modules: {
         auth: authModule,
         birthday: birthdayModule

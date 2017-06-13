@@ -11,11 +11,12 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "strictNullChecks": true,
-        "target": "es6",
+        "target": "es2015",
         "sourceMap": true,
         "outDir": "./dist",
         "declaration": true,
         "removeComments": true,
+        "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
         "typeRoots": [
             "./node_modules/@types"
