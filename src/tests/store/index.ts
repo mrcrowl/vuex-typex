@@ -1,9 +1,8 @@
 
+import { getStoreBuilder } from "../.."
 import { AuthState } from "./auth/state";
-import { BirthdayState } from "../store/birthday/state"
+import { BirthdayState } from "./birthday/state"
 import { Store } from "vuex"
-import { authModule } from './auth/auth'
-import { birthdayModule } from './birthday/birthday'
 
 export interface RootState
 {
@@ -11,9 +10,4 @@ export interface RootState
     birthday: BirthdayState
 }
 
-export const createStore = () => new Store<RootState>({
-    modules: {
-        auth: authModule,
-        birthday: birthdayModule
-    }
-})
+export const buildStore = () => getStoreBuilder<RootState>().vuexStore()

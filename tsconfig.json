@@ -15,7 +15,7 @@
         "sourceMap": true,
         "outDir": "./dist",
         "declaration": true,
-        "removeComments": true,
+        "removeComments": false,
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
         "typeRoots": [

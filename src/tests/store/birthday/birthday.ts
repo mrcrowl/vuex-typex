@@ -1,28 +1,29 @@
 
 import * as Vuex from "vuex"
-import { ModuleBuilder } from "../../.."
+import { getStoreBuilder } from "../../.."
 import { BirthdayState, Birthday } from "./state"
 import { Module } from "vuex"
 import { RootState } from "../index"
 import removeFirstAfterDelay from "./actions/removeFirstAfter";
+import { ModuleBuilder } from "../../.."
 
 const initialState: BirthdayState = {
     birthdays: []
 }
 
-const b = new ModuleBuilder<BirthdayState, RootState>("birthday", initialState)
+const mb = getStoreBuilder<RootState>().module<BirthdayState>("birthday", initialState)
 
 const addBirthdayMut = (state: BirthdayState, payload: { birthday: Birthday }) => state.birthdays.push(payload.birthday)
 const removeFirstBirthdayMut = (state: BirthdayState) => state.birthdays.shift()
 
-const oldestNameGetter = b.read((state): string | undefined =>
+const oldestNameGetter = mb.read((state): string | undefined =>
 {
     const oldestBirthday = (<Birthday[]>state.birthdays).slice().sort((a, b) => a.dob.getTime() - b.dob.getTime())[0]
     return oldestBirthday && oldestBirthday.name
 }, "oldestName")
 
-const dateOfBirthForMethod = b.read((state) => (name: string) => 
-{
+const dateOfBirthForMethod = mb.read((state) => (name: string) => 
+{ 
     const matches = state.birthdays.filter(b => b.name === name)
     if (matches.length)
     {
@@ -38,12 +39,11 @@ const birthday = {
     dateOfBirthFor(name: string) { return dateOfBirthForMethod()(name) },
 
     // mutations    
-    commitAddBirthday: b.commit(addBirthdayMut),
-    commitRemoveFirstBirthday: b.commit(removeFirstBirthdayMut),
+    commitAddBirthday: mb.commit(addBirthdayMut),
+    commitRemoveFirstBirthday: mb.commit(removeFirstBirthdayMut),
 
     // actions
-    dispatchRemoveFirstAfterDelay: b.dispatch(removeFirstAfterDelay),
-    provideStore: b.provideStore()
+    dispatchRemoveFirstAfterDelay: mb.dispatch(removeFirstAfterDelay),
 }
 
 // birthday.commitAddBirthday({ birthday: { dob: new Date(1980, 2, 3), name: "Louise" } })
@@ -52,4 +52,4 @@ const birthday = {
 // birthday.dispatchRemoveFirstAfter(1000)
 
 export default birthday
-export const birthdayModule: Module<BirthdayState, RootState> = b.toVuexModule()
+export { mb as birthdayModuleBuilder }

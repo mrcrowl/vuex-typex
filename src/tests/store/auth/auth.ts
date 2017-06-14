@@ -4,23 +4,23 @@ import { ModuleBuilder } from "../../.."
 import { AuthState } from "./state"
 import { RootState } from "../index"
 import { Module } from "vuex"
+import { getStoreBuilder } from "../../.."
 
 const initialState: AuthState = {
     userID: "b6c8185c6d0af2f5d968",
     isLoggedIn: true 
 }
 
-const a = new ModuleBuilder<AuthState, RootState>("auth", initialState)
+const storeBuilder = getStoreBuilder<RootState>()
+const moduleBuilder = storeBuilder.module<AuthState>("auth", initialState)
 
 const auth = {
-    commitSetUserID: a.commit((state, payload: { userID: string }) => state.userID = payload.userID, "setUserID"),
-    commitSetIsLoggedIn: a.commit((state, payload: { isLoggedIn: boolean }) => state.isLoggedIn = payload.isLoggedIn, "isLoggedIn"),
-    dispatchLogin: a.dispatch((context) =>
+    commitSetUserID: moduleBuilder.commit((state, payload: { userID: string }) => state.userID = payload.userID, "setUserID"),
+    commitSetIsLoggedIn: moduleBuilder.commit((state, payload: { isLoggedIn: boolean }) => state.isLoggedIn = payload.isLoggedIn, "isLoggedIn"),
+    dispatchLogin: moduleBuilder.dispatch((context) =>
     {
         return
-    }, "login"),
-    provideStore: a.provideStore()
+    }, "login")
 }
 
 export default auth
-export const authModule: Module<AuthState, RootState> = a.toVuexModule()

@@ -1,19 +1,18 @@
 import { expect } from "chai"
 import * as Vue from "vue"
 import * as Vuex from "vuex"
-import { createStore } from "./store"
-import { RootState } from "./store/index"
+import { buildStore, RootState } from "./store/index"
 import birthday from "./store/birthday/birthday"
 import auth from "./store/auth/auth"
 
-describe("Running an action", () =>
+describe("Run an action", () =>
 {
     let store: Vuex.Store<RootState>
 
     beforeEach(() =>
     {
         Vue.use(Vuex)
-        store = createStore()
+        store = buildStore()
         store.replaceState({
             birthday: {
                 birthdays: [
@@ -28,11 +27,9 @@ describe("Running an action", () =>
             },
             auth: { isLoggedIn: false, userID: "" }
         })
-        auth.provideStore(store)
-        birthday.provideStore(store)
     })
 
-    describe("remove first 2 birthdays", () =>
+    describe("that removes first 2 birthdays with delays", () =>
     {
         it("should show Bertram after removing first two birthdays", async () =>
         {
