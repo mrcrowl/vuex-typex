@@ -10,4 +10,6 @@ export default async function removeFirstAfterDelay(context: BareActionContext<B
         await new Promise((resolve, _) => setTimeout(resolve, delay)); // second delay
         birthday.commitRemoveFirstBirthday()
     }
+
+    return
 }

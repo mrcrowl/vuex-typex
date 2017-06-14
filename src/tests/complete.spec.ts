@@ -34,9 +34,37 @@ describe("Run an action", () =>
         it("should show Bertram after removing first two birthdays", async () =>
         {
             expect(birthday.oldestName).equal("Erlich")
-            await birthday.dispatchRemoveFirstAfterDelay(25)
-            await birthday.dispatchRemoveFirstAfterDelay(25)
+            await birthday.dispatchRemoveFirstAfterDelay(5)
+            await birthday.dispatchRemoveFirstAfterDelay(5)
             expect(birthday.oldestName).equal("Bertram")
+        })
+
+        it("DOB for Betram should be defined", async () =>
+        {
+            expect(birthday.dateOfBirthFor("Bertram")).to.not.be.undefined
+        })
+
+        it("DOB for Betram should be 14-Aug-1985", async () =>
+        {
+            expect(birthday.dateOfBirthFor("Bertram")!.getTime()).to.equal(new Date(1985, 7, 14).getTime())
+        })
+
+        it("DOB for Joe Bloggs should be undefined", async () =>
+        {
+            expect(birthday.dateOfBirthFor("Joe Bloggs")).to.be.undefined
+        })
+
+        it("oldestName should be undefined when no birthdays", async () =>
+        {
+            birthday.commitClearBirthdays()
+            expect(birthday.oldestName).to.be.undefined
+        })
+
+        it("oldestName should be Nancy when birthday added from empty", async () =>
+        {
+            birthday.commitClearBirthdays()
+            birthday.commitAddBirthday({ birthday: { dob: new Date(2017, 5, 15), name: "Nancy" } })
+            expect(birthday.oldestName).to.equal("Nancy")
         })
     })
 })

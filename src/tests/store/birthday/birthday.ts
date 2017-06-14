@@ -15,6 +15,7 @@ const mb = getStoreBuilder<RootState>().module<BirthdayState>("birthday", initia
 
 const addBirthdayMut = (state: BirthdayState, payload: { birthday: Birthday }) => state.birthdays.push(payload.birthday)
 const removeFirstBirthdayMut = (state: BirthdayState) => state.birthdays.shift()
+const clearBirthdaysMut = (state:BirthdayState) => state.birthdays = []
 
 const oldestNameGetter = mb.read((state): string | undefined =>
 {
@@ -33,6 +34,7 @@ const dateOfBirthForMethod = mb.read((state) => (name: string) =>
     return
 }, "dob")
 
+
 const birthday = {
     // getters + methods
     get oldestName() { return oldestNameGetter() },
@@ -41,6 +43,7 @@ const birthday = {
     // mutations    
     commitAddBirthday: mb.commit(addBirthdayMut),
     commitRemoveFirstBirthday: mb.commit(removeFirstBirthdayMut),
+    commitClearBirthdays: mb.commit(clearBirthdaysMut),
 
     // actions
     dispatchRemoveFirstAfterDelay: mb.dispatch(removeFirstAfterDelay),
