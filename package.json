@@ -1,6 +1,6 @@
 {
   "name": "vuex-typex",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A TypeScript pattern for strongly-typed access to Vuex Store modules",
   "files": [
     "dist/index.js",

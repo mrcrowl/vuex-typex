@@ -1,5 +1,5 @@
 
-import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store, StoreOptions, ModuleTree } from "vuex"
+import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store, StoreOptions, ModuleTree, Plugin } from "vuex"
 
 const useRootNamespace = { root: true }
 
@@ -24,7 +24,12 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
 
     private _vuexModule: Module<S, R> | undefined
 
-    constructor(public readonly namespace: string, private state: S) { }
+    constructor(public readonly namespace: string, private _state: S) { }
+
+    state(): () => S
+    {
+        return () => (<any>this._store.state)[this.namespace] as S
+    }
 
     commit<P>(handler: MutationHandler<S, void>): () => void
     commit<P>(handler: MutationHandler<S, P>): (payload: P) => void
@@ -74,7 +79,7 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
         {
             this._vuexModule = {
                 namespaced: true,
-                state: this.state,
+                state: this._state,
                 getters: this._getters,
                 mutations: this._mutations,
                 actions: this._actions
@@ -124,6 +129,9 @@ export interface ModuleBuilder<S, R={}>
     read<T>(handler: GetterHandler<S, R, T>): () => T
     read<T>(handler: GetterHandler<S, R, T>, name: string): () => T
 
+    /** Returns a method to return this module's state */
+    state(): () => S
+
     /** Returns a Vuex Module.  Called after all strongly-typed functions have been obtained */
     vuexModule(): Module<S, R>
 
@@ -148,10 +156,15 @@ class StoreBuilderImpl<R> implements StoreBuilder<R> {
     }
 
     vuexStore(): Store<R>
+    vuexStore(overrideOptions: StoreOptions<R>): Store<R>
+    vuexStore(overrideOptions: StoreOptions<R> = {}): Store<R>
     {
         if (!this._vuexStore)
         {
-            const options: StoreOptions<R> = this.createStoreOptions()
+            const options: StoreOptions<R> = { 
+                ...this.createStoreOptions(),
+                ...overrideOptions
+            }
             const store = new Store<R>(options)
             this._moduleBuilders.forEach(m => m._provideStore(store))
             this._vuexStore = store
@@ -163,17 +176,25 @@ class StoreBuilderImpl<R> implements StoreBuilder<R> {
     {
         const modules: ModuleTree<R> = {}
         this._moduleBuilders.forEach(m => modules[m.namespace] = m.vuexModule())
-        return { modules }
+        return { modules  }
     }
 }
 
-export interface StoreBuilder<R>
+export interface VuexStoreOptions<R>
+{
+    plugins?: Plugin<R>[]
+}
+
+export interface StoreBuilder<R> 
 {
     /** Get a ModuleBuilder for the namespace provided */
     module<S>(namespace: string, state: S): ModuleBuilder<S, R>
 
     /** Output a Vuex Store after all modules have been built */
     vuexStore(): Store<R>
+
+    /** Output a Vuex Store and provide options, e.g. plugins -- these take precedence over any auto-generated options */
+    vuexStore(overrideOptions: StoreOptions<R>): Store<R>
 }
 
 const storeBuilderSingleton = new StoreBuilderImpl<any>()

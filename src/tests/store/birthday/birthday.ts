@@ -34,9 +34,11 @@ const dateOfBirthForMethod = mb.read((state) => (name: string) =>
     return
 }, "dob")
 
+const stateReader = mb.state();
 
 const birthday = {
     // getters + methods
+    get state() { return stateReader() },
     get oldestName() { return oldestNameGetter() },
     dateOfBirthFor(name: string) { return dateOfBirthForMethod()(name) },
 
