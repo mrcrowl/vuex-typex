@@ -38,6 +38,10 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
     commit<P>(handler: MutationHandler<S, P>, name?: string)
     {
         const { key, namespacedKey } = qualifyKey(handler, this.namespace, name)
+        if (this._mutations[key])
+        {
+            throw new Error(`There is already a mutation named ${key}.`)
+        }
         this._mutations[key] = handler
         return ((payload: P) => this._store.commit(namespacedKey, payload, useRootNamespace)) as any
     }
@@ -53,6 +57,10 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
     dispatch<P, T>(handler: any, name?: string): any
     {
         const { key, namespacedKey } = qualifyKey(handler, this.namespace, name)
+        if (this._actions[key])
+        {
+            throw new Error(`There is already an action named ${key}.`)
+        }
         this._actions[key] = handler
         return (payload: P) => this._store.dispatch(namespacedKey, payload, useRootNamespace)
     }
@@ -62,6 +70,10 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
     read<T>(handler: GetterHandler<S, R, T>, name?: string): () => T
     {
         const { key, namespacedKey } = qualifyKey(handler, this.namespace, name)
+        if (this._getters[key])
+        {
+            throw new Error(`There is already a getter named ${key}.`)
+        }
         this._getters[key] = handler
         return () =>
         {
@@ -99,7 +111,7 @@ function qualifyKey(handler: Function, namespace: string | undefined, name?: str
     const key: string = name || handler.name
     if (!key)
     {
-        throw new Error(`Vuex handler functions must not be anonymous. Possible causes: fat-arrow functions, uglify`)
+        throw new Error(`Vuex handler functions must not be anonymous. Possible causes: fat-arrow functions, uglify.  To fix, pass a unique name as a second parameter after your callback.`)
     }
     return namespace ? { key, namespacedKey: `${namespace}/${key}` } : { key, namespacedKey: key }
 }
