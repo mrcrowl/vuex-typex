@@ -10,7 +10,7 @@ import { Store } from "vuex"
 
 interface PluginState { age: number }
 
-describe("Create a store with a plugin", () =>
+describe("Create a store", () =>
 {
     let moduleBuilder: ModuleBuilder<PluginState>
     let storeBuilder: StoreBuilder<{}>
@@ -25,7 +25,7 @@ describe("Create a store with a plugin", () =>
         commitDecrease = moduleBuilder.commit((state, payload) => { state.age-- }, "decrease")
     })
 
-    describe("create a store that includes a logger plugin", () =>
+    describe("that includes a logger plugin", () =>
     {
         it("should log each mutation", () =>
         {

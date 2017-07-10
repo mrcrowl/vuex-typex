@@ -15,7 +15,9 @@ describe("Create an anon store", () =>
     let moduleBuilder: ModuleBuilder<AnonState>
     beforeEach(() =>
     {
-        moduleBuilder = getStoreBuilder("anon").module("anon", { age: 36 })
+        const anonStore = getStoreBuilder("anon")
+        anonStore.reset()
+        moduleBuilder = anonStore.module("anon", { age: 36 })
     })
 
     describe("try to create a getter with anon function", () =>
