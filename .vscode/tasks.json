@@ -10,8 +10,8 @@
     {
       "taskName": "build",
       "isBuildCommand": true,
-      "isBackground": true,
-      "problemMatcher": "$tsc-watch"
+      "isBackground": false,
+      "problemMatcher": "$tsc"
     },
     // {
     //   "taskName": "clean"

@@ -1,6 +1,6 @@
 import { expect } from "chai"
-import * as Vue from "vue"
-import * as Vuex from "vuex"
+import Vue from "vue"
+import Vuex, { Store } from "vuex"
 import { buildStore } from "./store"
 import { RootState } from "./store/index"
 import birthday, { birthdayModuleBuilder } from "./store/birthday/birthday"
@@ -9,7 +9,7 @@ import { getStoreBuilder } from "../index"
 
 describe("Output the store", () =>
 {
-    let store: Vuex.Store<RootState>
+    let store: Store<RootState>
 
     beforeEach(() =>
     {

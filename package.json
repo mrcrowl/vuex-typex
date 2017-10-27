@@ -1,6 +1,6 @@
 {
   "name": "vuex-typex",
-  "version": "1.0.9",
+  "version": "3.0.1",
   "description": "A TypeScript pattern for strongly-typed access to Vuex Store modules",
   "files": [
     "dist/index.js",
@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
-    "vuex": "^2.3.1"
+    "vuex": "^3.0.0"
   },
   "devDependencies": {
     "@types/chai": "^3.4.35",
@@ -20,8 +20,8 @@
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "rimraf": "^2.6.1",
-    "typescript": "^2.2.1",
-    "vue": "^2.3.0"
+    "typescript": "^2.5.0",
+    "vue": "^2.5.0"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
   "homepage": "https://github.com/mrcrowl/vuex-typex#readme",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
-    "compile": "tsc --pretty --watch",
+    "compile": "tsc --pretty",
     "build": "npm run clean && npm run compile",
     "test": "npm run coverage",
     "test-only": "mocha --recursive dist/**/*.spec.js",

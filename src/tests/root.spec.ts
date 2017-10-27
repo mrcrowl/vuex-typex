@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import * as Vue from "vue"
-import * as Vuex from "vuex"
+import Vuex from "vuex"
 import { buildStore } from "./store"
 import { getStoreBuilder, StoreBuilder, ModuleBuilder } from "../index"
 import { Store } from "vuex"

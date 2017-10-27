@@ -1,13 +1,13 @@
 import { expect } from "chai"
-import * as Vue from "vue"
-import * as Vuex from "vuex"
+import Vue from "vue"
+import Vuex, { Store } from "vuex"
 import { buildStore, RootState } from "./store/index"
 import birthday from "./store/birthday/birthday"
 import auth from "./store/auth/auth"
 
 describe("Run an action", () =>
 {
-    let store: Vuex.Store<RootState>
+    let store: Store<RootState>
 
     beforeEach(() =>
     {

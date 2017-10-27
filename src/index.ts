@@ -75,7 +75,7 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
         {
             throw new Error(`There is already a module named '${qualifiedNamespace}'.  If you meant to get the existing module, then provide no initialState argument.`)
         }
-        const nestedBuilder = new ModuleBuilderImpl(qualifiedNamespace, initialState)
+        const nestedBuilder = new ModuleBuilderImpl<M, R>(qualifiedNamespace, initialState)
         this._moduleBuilders[namespace] = nestedBuilder
         return nestedBuilder
     }
@@ -244,7 +244,7 @@ class StoreBuilderImpl<R> extends ModuleBuilderImpl<any, R> {
     {
         if (!this._store)
         {
-            const options: StoreOptions<R> = {
+            const options: StoreOptions<R> & { namespaced?: boolean } = {
                 ...this.vuexModule(),
                 ...overrideOptions
             }

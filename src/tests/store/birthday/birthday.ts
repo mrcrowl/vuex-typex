@@ -1,5 +1,5 @@
 
-import * as Vuex from "vuex"
+import Vuex from "vuex"
 import { getStoreBuilder } from "../../.."
 import { BirthdayState, Birthday } from "./state"
 import { Module } from "vuex"

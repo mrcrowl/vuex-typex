@@ -1,5 +1,5 @@
 
-import * as Vuex from "vuex"
+import Vuex from "vuex"
 import { ModuleBuilder } from "../../.."
 import { AuthState } from "./state"
 import { RootState } from "../index"
