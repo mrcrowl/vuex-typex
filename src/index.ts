@@ -240,14 +240,29 @@ class StoreBuilderImpl<R> extends ModuleBuilderImpl<any, R> {
 
     vuexStore(): Store<R>
     vuexStore(overrideOptions: StoreOptions<R>): Store<R>
-    vuexStore(overrideOptions: StoreOptions<R> = {}): Store<R>
+    vuexStore(overrideOptions: StoreOptions<R> = {}, mergeModule: { mergeModule: boolean } = { mergeModule: false }): Store<R>
     {
         if (!this._store)
         {
-            const options: StoreOptions<R> & { namespaced?: boolean } = {
-                ...this.vuexModule(),
-                ...overrideOptions
+            const module = this.vuexModule();
+
+            if (mergeModule.mergeModule) {
+                var options: StoreOptions<R> & { namespaced?: boolean } = {
+                    state: { ...module.state, ...(overrideOptions.state as {}) },
+                    getters: { ...module.getters, ...overrideOptions.getters },
+                    actions: { ...module.actions, ...overrideOptions.actions },
+                    mutations: { ...module.mutations, ...overrideOptions.mutations },
+                    modules: { ...module.modules, ...overrideOptions.modules },
+                    plugins: overrideOptions.plugins,
+                    strict: overrideOptions.strict
+                }
+            } else {
+                var options: StoreOptions<R> & { namespaced?: boolean } = {
+                    ...module,
+                    ...overrideOptions
+                }
             }
+            
             const store = new Store<R>(options)
             forEachValue(this._moduleBuilders, m => m._provideStore(store))
             this._store = store
@@ -283,8 +298,8 @@ export interface StoreBuilder<R>
     /** Output a Vuex Store after all modules have been built */
     vuexStore(): Store<R>
 
-    /** Output a Vuex Store and provide options, e.g. plugins -- these take precedence over any auto-generated options */
-    vuexStore(overrideOptions: StoreOptions<R>): Store<R>
+    /** Output a Vuex Store and provide options with the option of merging root module or override root module settings, e.g. plugins -- these take precedence over any auto-generated options */
+    vuexStore(overrideOptions: StoreOptions<R>, mergeModule?: { mergeModule: boolean }): Store<R>
 
     /** Creates a strongly-typed commit function for the provided mutation handler */
     commit<P>(handler: MutationHandler<R, void>): () => void
