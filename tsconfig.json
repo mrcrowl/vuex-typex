@@ -1,7 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "module": "es6",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "lib": [
             "es2015"
