@@ -5,7 +5,7 @@ const useRootNamespace = { root: true }
 
 export type MutationHandler<S, P> = (state: S, payload: P) => void
 export type ActionHandler<S, R, P, T> = (context: BareActionContext<S, R>, payload: P) => Promise<T> | T
-export type GetterHandler<S, R, T> = (state: S, rootState: R) => T
+export type GetterHandler<S, R, T> = (state: S, getters: any, rootState: R) => T
 
 
 interface Dictionary<T> { [key: string]: T }
