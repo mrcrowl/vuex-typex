@@ -27,7 +27,7 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
 
     protected _vuexModule: Module<S, R> | undefined
 
-    constructor(public readonly namespace: string, private _initialState: S) { }
+    constructor(public readonly namespace: string, private _initialState: S | null) { }
 
     state(): () => S
     {
@@ -54,28 +54,30 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
         }
     }
 
+    setInitialState(initialState: S): void
+    {
+        this._initialState = initialState
+    }
+
     module<M>(namespace: string, initialState: M): ModuleBuilder<M, R>
     module<M>(namespace: string): ModuleBuilder<M, R>
     module<M>(namespace: string, initialState?: M): ModuleBuilder<M, R>
     {
         const existingModule = this._moduleBuilders[namespace]
         const qualifiedNamespace = qualifyNamespace(this.namespace, namespace)
-        if (!initialState)
+        if (!initialState && existingModule)
         {
-            // no second argument: get an existing module
-            if (!existingModule)
-            {
-                throw new Error(`There is no module named '${qualifiedNamespace}'.  If you meant to create a nested module, then provide initial-state as the second argument.'`)
-            }
             return existingModule
         }
 
         // both arguments: create a module        
-        if (existingModule)
+        if (existingModule && initialState)
         {
-            throw new Error(`There is already a module named '${qualifiedNamespace}'.  If you meant to get the existing module, then provide no initialState argument.`)
+            existingModule.setInitialState(initialState)
+            return existingModule
         }
-        const nestedBuilder = new ModuleBuilderImpl<M, R>(qualifiedNamespace, initialState)
+
+        const nestedBuilder = new ModuleBuilderImpl<M, R>(qualifiedNamespace, initialState || null)
         this._moduleBuilders[namespace] = nestedBuilder
         return nestedBuilder
     }
@@ -147,7 +149,7 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
 
             this._vuexModule = {
                 namespaced: true,
-                state: this._initialState,
+                state: this._initialState || <S>{},
                 getters: this._getters,
                 mutations: this._mutations,
                 actions: this._actions,
@@ -190,6 +192,9 @@ export interface ModuleBuilder<S, R={}>
 
     /** Gets an existing nested module within this module */
     module<M>(namespace: string): ModuleBuilder<M, R>
+
+    /** Set the initial state for an existing module */
+    setInitialState(initialState: S): void
 
     /** Creates a strongly-typed commit function for the provided mutation handler */
     commit<P>(handler: MutationHandler<S, void>): () => void
