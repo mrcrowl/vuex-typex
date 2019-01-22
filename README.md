@@ -2,7 +2,7 @@
 
 ### A TypeScript pattern for strongly-typed access to Vuex Store modules
 
-I really [vuex-typescript](https://github.com/istrib/vuex-typescript/) by [@istrib](https://github.com/istrib)
+I really like [vuex-typescript](https://github.com/istrib/vuex-typescript/) by [@istrib](https://github.com/istrib)
 
 I just wanted to take the ideas _bit_ further.
 
