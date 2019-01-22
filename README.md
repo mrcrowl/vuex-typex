@@ -17,8 +17,8 @@ My main changes are:
 I also took the point of view that we don't need to start with a vuex-store options object.  If we treat the accessor-creator as a builder, then the store can be generated:
 
 ```typescript
-import { getStoreBuilder } from "vuex-typex"
-import Vuex, { Store, ActionContext } from "vuex"
+import { getStoreBuilder, BareActionContext } from "vuex-typex"
+import Vuex, { Store } from "vuex"
 import Vue from "vue"
 const delay = (duration: number) => new Promise((c, e) => setTimeout(c, duration))
 
@@ -34,7 +34,7 @@ const moduleBuilder = storeBuilder.module<BasketState>("basket", { items: [] })
 namespace basket
 {
     const appendItemMutation = (state: BasketState, payload: { item: Item }) => state.items.push(payload.item)
-    const delayedAppendAction = async (context: ActionContext<BasketState, RootState>) =>
+    const delayedAppendAction = async (context: BareActionContext<BasketState, RootState>) =>
     {
         await delay(1000)
         basket.commitAppendItem({ item: { id: "abc123", name: "ABC Item" } })
