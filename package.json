@@ -8,8 +8,8 @@
   ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "dependencies": {
-    "vuex": "^3.0.0"
+  "peerDependencies": {
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@types/chai": "^3.4.35",
@@ -21,7 +21,8 @@
     "nyc": "^10.1.2",
     "rimraf": "^2.6.1",
     "typescript": "^2.5.0",
-    "vue": "^2.5.0"
+    "vue": "^2.5.0",
+    "vuex": "^3.0.1"
   },
   "repository": {
     "type": "git",
