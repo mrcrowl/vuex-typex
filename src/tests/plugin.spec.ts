@@ -1,12 +1,8 @@
-import { expect } from "chai"
-import * as Vue from "vue"
-import Vuex from "vuex"
-import { buildStore } from "./store"
-import { RootState } from "./store/index"
-import birthday, { birthdayModuleBuilder } from "./store/birthday/birthday"
-import auth from "./store/auth/auth"
-import { getStoreBuilder, StoreBuilder, ModuleBuilder } from "../index"
-import { Store } from "vuex"
+import { expect } from "chai";
+import Vue from "vue";
+import * as Vuex from "vuex";
+import { Store } from "vuex";
+import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../index";
 
 interface PluginState { age: number }
 
@@ -19,6 +15,7 @@ describe("Create a store", () =>
     let commitDecrease: () => void
     beforeEach(() =>
     {
+        Vue.use(Vuex)
         storeBuilder = getStoreBuilder("plugin-store")
         moduleBuilder = storeBuilder.module("pluggy", { age: 36 })
         commitIncrease = moduleBuilder.commit((state, payload) => { state.age++ }, "increase")

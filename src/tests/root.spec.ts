@@ -1,9 +1,7 @@
-import { expect } from "chai"
-import * as Vue from "vue"
-import Vuex from "vuex"
-import { buildStore } from "./store"
-import { getStoreBuilder, StoreBuilder, ModuleBuilder } from "../index"
-import { Store } from "vuex"
+import { expect } from "chai";
+import Vue from "vue";
+import * as Vuex from "vuex";
+import { getStoreBuilder, StoreBuilder } from "../index";
 
 interface RootState { name: string }
 
@@ -12,6 +10,7 @@ describe("Create a store", () =>
     let storeBuilder: StoreBuilder<RootState>
     beforeEach(() =>
     {
+        Vue.use(Vuex)
         storeBuilder = getStoreBuilder<RootState>("root")
         storeBuilder.reset()
     })
@@ -26,7 +25,7 @@ describe("Create a store", () =>
             })
             expect(stateReader().name).to.equal("david")
         })
-        
+
         it("should support getters", () =>
         {
             const uppercaseName = (state: RootState) => state.name.toUpperCase()

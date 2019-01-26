@@ -1,9 +1,8 @@
-import { expect } from "chai"
-import Vue from "vue"
-import Vuex, { Store } from "vuex"
-import { buildStore, RootState } from "./store/index"
-import birthday from "./store/birthday/birthday"
-import auth from "./store/auth/auth"
+import { expect } from "chai";
+import Vue from "vue";
+import Vuex, { Store } from "vuex";
+import birthday from "./store/birthday/birthday";
+import { buildStore, RootState } from "./store/index";
 
 describe("Run an action", () =>
 {

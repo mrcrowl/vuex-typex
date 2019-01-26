@@ -1,10 +1,7 @@
-import { expect } from "chai"
-import * as Vue from "vue"
-import Vuex from "vuex"
-import { buildStore } from "./store"
-import { RootState } from "./store/index"
-import { getStoreBuilder, StoreBuilder, ModuleBuilder } from "../index"
-import { Store } from "vuex"
+import { expect } from "chai";
+import Vue from "vue";
+import * as Vuex from "vuex";
+import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../index";
 
 interface OuterState { str: string, inner: InnerState }
 interface InnerState { int: number }
@@ -16,6 +13,7 @@ describe("Create a store", () =>
     let storeBuilder: StoreBuilder<{}>
     beforeEach(() =>
     {
+        Vue.use(Vuex)
         storeBuilder = getStoreBuilder("nested-store")
         outerBuilder = storeBuilder.module("outer", <OuterState>{ str: "hello, world." })
         innerBuilder = outerBuilder.module("inner", <InnerState>{ int: 42 })
@@ -28,7 +26,7 @@ describe("Create a store", () =>
         {
             const store = storeBuilder.vuexStore()
             const readState = outerBuilder.state()
-            
+
             expect(readState().inner.int).to.equal(42)
         })
     })

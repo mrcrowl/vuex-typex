@@ -1,17 +1,21 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "module": "es6",
+        "module": "commonjs",
         "moduleResolution": "node",
         "lib": [
+            "dom",
+            "es5",
             "es2015"
         ],
         // "strict": true,
-        "allowSyntheticDefaultImports": false,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "strictNullChecks": true,
+        "esModuleInterop": true,
         "target": "es5",
         "sourceMap": true,
         "outDir": "./dist",
