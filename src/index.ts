@@ -1,23 +1,24 @@
 
-import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store, StoreOptions, ModuleTree, Plugin } from "vuex"
+import { ActionTree, GetterTree, Module, ModuleTree, MutationTree, Plugin, Store, StoreOptions } from "vuex";
 
 const useRootNamespace = { root: true }
 
 export type MutationHandler<S, P> = (state: S, payload: P) => void
-export type ActionHandler<S, R, P, T> = (context: BareActionContext<S, R>, payload: P) => Promise<T> | T
-export type GetterHandler<S, R, T> = (state: S, getters: any, rootState: R) => T
+export type ActionHandler<S, R, G, P, T> = (context: BareActionContext<S, R, G>, payload: P) => Promise<T> | T
+export type GetterHandler<S, R, G, T> = (state: S, getters: G, rootState: R) => T
 
 
 interface Dictionary<T> { [key: string]: T }
 interface RootStore<R> extends Store<R> { rootGetters?: any }
 
-export interface BareActionContext<S, R>
+export interface BareActionContext<S, R, G=any>
 {
     state: S
     rootState: R
+    getters: G
 }
 
-class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
+class ModuleBuilderImpl<S, R={}, G=any> implements ModuleBuilder<S, R> {
     protected _store: RootStore<R> | undefined
 
     protected _getters: GetterTree<S, R> = {}
@@ -97,14 +98,14 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
         return ((payload: P) => this._store!.commit(namespacedKey, payload, useRootNamespace)) as any
     }
 
-    dispatch<P, T>(handler: ActionHandler<S, R, void, void>): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, void>): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, T>): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, T>): (payload: P) => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, void>, name: string): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, void>, name: string): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, T>, name: string): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, T>, name: string): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>, name: string): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>, name: string): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>, name: string): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>, name: string): (payload: P) => Promise<T>
     dispatch<P, T>(handler: any, name?: string): any
     {
         const { key, namespacedKey } = qualifyKey(handler, this.namespace, name)
@@ -116,9 +117,9 @@ class ModuleBuilderImpl<S, R={}> implements ModuleBuilder<S, R> {
         return (payload: P) => this._store!.dispatch(namespacedKey, payload, useRootNamespace)
     }
 
-    read<T>(handler: GetterHandler<S, R, T>): () => T
-    read<T>(handler: GetterHandler<S, R, T>, name: string): () => T
-    read<T>(handler: GetterHandler<S, R, T>, name?: string): () => T
+    read<T>(handler: GetterHandler<S, R, G, T>): () => T
+    read<T>(handler: GetterHandler<S, R, G, T>, name: string): () => T
+    read<T>(handler: GetterHandler<S, R, G, T>, name?: string): () => T
     {
         const { key, namespacedKey } = qualifyKey(handler, this.namespace, name)
         if (this._getters[key])
@@ -182,7 +183,7 @@ function qualifyNamespace(namespace: string | undefined, key: string)
     return namespace ? `${namespace}/${key}` : key
 }
 
-export interface ModuleBuilder<S, R={}>
+export interface ModuleBuilder<S, R={}, G=any>
 {
     /** The namespace of this ModuleBuilder */
     readonly namespace: string
@@ -203,18 +204,18 @@ export interface ModuleBuilder<S, R={}>
     commit<P>(handler: MutationHandler<S, P>, name: string): (payload: P) => void
 
     /** Creates a strongly-typed dispatch function for the provided action handler */
-    dispatch<P, T>(handler: ActionHandler<S, R, void, void>): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, void>): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, T>): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, T>): (payload: P) => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, void>, name: string): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, void>, name: string): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<S, R, void, T>, name: string): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<S, R, P, T>, name: string): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>, name: string): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>, name: string): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>, name: string): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>, name: string): (payload: P) => Promise<T>
 
     /** Creates a strongly-typed read function for the provided getter function */
-    read<T>(handler: GetterHandler<S, R, T>): () => T
-    read<T>(handler: GetterHandler<S, R, T>, name: string): () => T
+    read<T>(handler: GetterHandler<S, R, G, T>): () => T
+    read<T>(handler: GetterHandler<S, R, G, T>, name: string): () => T
 
     /** Creates a method to return this module's state */
     state(): () => S
@@ -298,18 +299,18 @@ export interface StoreBuilder<R>
     commit<P>(handler: MutationHandler<R, P>, name: string): (payload: P) => void
 
     /** Creates a strongly-typed dispatch function for the provided action handler */
-    dispatch<P, T>(handler: ActionHandler<R, R, void, void>): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<R, R, P, void>): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<R, R, void, T>): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<R, R, P, T>): (payload: P) => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<R, R, void, void>, name: string): () => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<R, R, P, void>, name: string): (payload: P) => Promise<void>
-    dispatch<P, T>(handler: ActionHandler<R, R, void, T>, name: string): () => Promise<T>
-    dispatch<P, T>(handler: ActionHandler<R, R, P, T>, name: string): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, void>): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, void>): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>): (payload: P) => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, void>, name: string): () => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, void>, name: string): (payload: P) => Promise<void>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>, name: string): () => Promise<T>
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>, name: string): (payload: P) => Promise<T>
 
     /** Creates a strongly-typed read function for the provided getter function */
-    read<T>(handler: GetterHandler<R, R, T>): () => T
-    read<T>(handler: GetterHandler<R, R, T>, name: string): () => T
+    read<T>(handler: GetterHandler<R, R, void, T>): () => T
+    read<T>(handler: GetterHandler<R, R, void, T>, name: string): () => T
 
     /** Creates a method to return the root state */
     state(): () => R
