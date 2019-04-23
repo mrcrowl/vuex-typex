@@ -21,14 +21,6 @@ describe("Output the store", () =>
         })
     })
 
-    describe("then try to add another module", () =>
-    {
-        it("should fail", () =>
-        {
-            expect(() => getStoreBuilder().module("blah", {})).to.throw()
-        })
-    })
-
     describe("then create a different store and try to add a module", () =>
     {
         it("should succeed", () =>
