@@ -236,11 +236,6 @@ class StoreBuilderImpl<R> extends ModuleBuilderImpl<any, R> {
     module<S>(namespace: string): ModuleBuilder<S, R>
     module<S>(namespace: string, initialState?: S): ModuleBuilder<S, R>
     {
-        if (this._store && initialState)
-        {
-            throw new Error("Can't add module after vuexStore() has been called")
-        }
-
         return super.module(namespace, initialState) as ModuleBuilder<S, R>
     }
 
@@ -259,6 +254,21 @@ class StoreBuilderImpl<R> extends ModuleBuilderImpl<any, R> {
             this._store = store
         }
         return this._store
+    }
+
+    registerModule(namespace: string): void
+    {
+        if (this._store && this._vuexModule) {
+            const mBuilder = this._moduleBuilders[namespace]
+            mBuilder._provideStore(this._store)
+
+            const vModule = mBuilder.vuexModule()
+            this._store.registerModule(namespace, vModule)
+
+            this._vuexModule.modules![namespace] = vModule
+        } else {
+            throw 'vuexStore hasn\'t been called yet, use module() instead.'
+        }
     }
 
     reset()
@@ -314,6 +324,9 @@ export interface StoreBuilder<R>
 
     /** Creates a method to return the root state */
     state(): () => R
+    
+    /** Dynamically register module */
+    registerModule(namespace: string): void
 
     /** WARNING: Discards vuex store and reset modules (non intended for end-user use) */
     reset(): void
