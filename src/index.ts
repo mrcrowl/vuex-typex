@@ -260,6 +260,7 @@ class StoreBuilderImpl<R> extends ModuleBuilderImpl<any, R> {
     {
         if (this._store && this._vuexModule) {
             const mBuilder = this._moduleBuilders[namespace]
+            if (!mBuilder) throw 'fail to register module: ' + namespace
             mBuilder._provideStore(this._store)
 
             const vModule = mBuilder.vuexModule()
