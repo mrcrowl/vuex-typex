@@ -1,10 +1,11 @@
 {
   "name": "vuex-typex",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "A TypeScript pattern for strongly-typed access to Vuex Store modules",
   "files": [
     "dist/index.js",
-    "dist/index.d.ts"
+    "dist/index.d.ts",
+    "dist/index.js.map"
   ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -48,7 +49,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "compile": "tsc --pretty",
-    "build": "npm run clean && npm run compile",
+    "build": "npm run clean && npm run compile && rimraf dist/examples && rimraf dist/tests",
     "COMMENTS": "\"test-only\": \"mocha --recursive dist/**/*.spec.js\",",
     "test:unit": "jest",
     "test": "npm run test:unit"
