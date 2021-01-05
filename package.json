@@ -17,7 +17,7 @@
     "@types/chai-http": "^0.0.30",
     "@types/jest": "^23.3.13",
     "@types/mocha": "^2.2.40",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "chai": "^3.5.0",
     "growl": "^1.10.5",
     "jest": "^23.0.0",
