@@ -1,7 +1,6 @@
-import { expect } from "chai";
 import Vue from "vue";
 import * as Vuex from "vuex";
-import { getStoreBuilder, StoreBuilder } from "../index";
+import { getStoreBuilder, StoreBuilder } from "../src/index";
 
 interface RootState { name: string }
 
@@ -23,7 +22,7 @@ describe("Create a store", () =>
             const store = storeBuilder.vuexStore({
                 state: { name: "david" }
             })
-            expect(stateReader().name).to.equal("david")
+            expect(stateReader().name).toBe("david")
         })
 
         it("should support getters", () =>
@@ -33,7 +32,7 @@ describe("Create a store", () =>
             const store = storeBuilder.vuexStore({
                 state: { name: "david" }
             })
-            expect(uppercaseNameGetter()).to.equal("DAVID")
+            expect(uppercaseNameGetter()).toBe("DAVID")
         })
     })
 })

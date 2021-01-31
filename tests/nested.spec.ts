@@ -1,7 +1,6 @@
-import { expect } from "chai";
 import Vue from "vue";
 import * as Vuex from "vuex";
-import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../index";
+import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../src/index";
 
 interface OuterState { str: string, inner: InnerState }
 interface InnerState { int: number }
@@ -27,7 +26,7 @@ describe("Create a store", () =>
             const store = storeBuilder.vuexStore()
             const readState = outerBuilder.state()
 
-            expect(readState().inner.int).to.equal(42)
+            expect(readState().inner.int).toBe(42)
         })
     })
 })

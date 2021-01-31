@@ -1,10 +1,8 @@
-import { expect } from "chai"
 import Vue from "vue"
 import Vuex, { Store } from "vuex"
 import { buildStore } from "./store"
 import { RootState } from "./store/index"
-import auth from "./store/auth/auth"
-import { getStoreBuilder } from "../index"
+import { getStoreBuilder } from "../src/index"
 
 describe("Output the store", () =>
 {
@@ -21,7 +19,7 @@ describe("Output the store", () =>
         { 
             expect(() => {
                 getStoreBuilder().registerModule('aModule')
-            }).to.throw()
+            }).toThrow()
         })
     })
 
@@ -34,13 +32,13 @@ describe("Output the store", () =>
 
             expect(() => {
                 birthday.commitClearBirthdays()
-            }).to.throw()
+            }).toThrow()
 
             getStoreBuilder().registerModule('birthday')
             
             expect(() => {
                 birthday.commitClearBirthdays()
-            }).to.not.throw()
+            }).not.toThrow()
         })
     })
 })

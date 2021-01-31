@@ -1,5 +1,5 @@
 import birthday from "../birthday"
-import { BareActionContext } from "../../../../index"
+import { BareActionContext } from "../../../../src/index"
 import { BirthdayState } from "../state"
 import { RootState } from "../../index"
 

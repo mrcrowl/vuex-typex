@@ -1,11 +1,11 @@
 
 import Vuex from "vuex"
-import { getStoreBuilder } from "../../.."
+import { getStoreBuilder } from "../../../src"
 import { BirthdayState, Birthday } from "./state"
 import { Module } from "vuex"
 import { RootState } from "../index"
 import removeFirstAfterDelay from "./actions/removeFirstAfter";
-import { ModuleBuilder } from "../../.."
+import { ModuleBuilder } from "../../../src"
 
 const initialState: BirthdayState = {
     birthdays: []

@@ -1,21 +1,15 @@
-import { expect } from "chai"
-import * as Vue from "vue"
-import Vuex from "vuex"
-import { buildStore } from "./store"
-import { RootState } from "./store/index"
-import birthday, { birthdayModuleBuilder } from "./store/birthday/birthday"
-import auth from "./store/auth/auth"
-import { getStoreBuilder } from "../index"
-import { StoreBuilder, ModuleBuilder } from "../index"
+import { getStoreBuilder, StoreBuilder } from "../src/index"
+import { ModuleBuilder } from "../src/index"
 
 interface AnonState { age: number }
 
 describe("Create an anon store", () =>
 {
     let moduleBuilder: ModuleBuilder<AnonState>
+    
     beforeEach(() =>
     {
-        const anonStore = getStoreBuilder("anon")
+        const anonStore: StoreBuilder<{}> = getStoreBuilder("anon")
         anonStore.reset()
         moduleBuilder = anonStore.module("anon", { age: 36 })
     })
@@ -28,7 +22,7 @@ describe("Create an anon store", () =>
             expect(() =>
             {
                 const readApproxDaysAlive = moduleBuilder.read((state: AnonState) => Math.round(state.age * 365.25))
-            }).to.throw()
+            }).toThrow()
         })
     })
 
@@ -39,7 +33,7 @@ describe("Create an anon store", () =>
             expect(() =>
             {
                 const readApproxDaysAlive = moduleBuilder.read((state: AnonState) => Math.round(state.age * 365.25), "daysAlive")
-            }).to.not.throw()
+            }).not.toThrow()
         })
     })
 
@@ -51,7 +45,7 @@ describe("Create an anon store", () =>
             expect(() =>
             {
                 const readApproxDaysAlive = moduleBuilder.read(daysAliveGetter)
-            }).to.not.throw()
+            }).not.toThrow()
         })
     })
 })

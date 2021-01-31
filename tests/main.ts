@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import Vue from "vue";
 import * as Vuex from "vuex";
 import { buildStore } from "./store";
@@ -25,10 +24,10 @@ async function test()
         },
         auth: { isLoggedIn: false, userID: "" }
     })
-    expect(birthday.oldestName).equal("Erlich")
+    expect(birthday.oldestName).toEqual("Erlich")
     await birthday.dispatchRemoveFirstAfterDelay(20)
     await birthday.dispatchRemoveFirstAfterDelay(20)
-    expect(birthday.oldestName).equal("Bertram")
+    expect(birthday.oldestName).toEqual("Bertram")
 }
 
 test();

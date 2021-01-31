@@ -1,4 +1,3 @@
-
 import { ActionTree, GetterTree, Module, ModuleTree, MutationTree, Plugin, Store, StoreOptions } from "vuex";
 
 const useRootNamespace = { root: true }
