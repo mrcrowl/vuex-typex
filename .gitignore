@@ -4,4 +4,3 @@ coverage/**/*
 npm-debug.log
 src/**/*.js
 src/**/*.js.map
-dist/**
