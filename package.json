@@ -4,7 +4,6 @@
   "description": "A TypeScript pattern for strongly-typed access to Vuex Store modules",
   "files": [
     "dist/index.js",
-    "dist/index.d.ts",
     "dist/index.js.map"
   ],
   "main": "dist/index.js",
@@ -12,24 +11,19 @@
   "peerDependencies": {
     "vuex": "^3.0.1"
   },
-  "devDependencies": {
-    "@types/chai": "^3.4.35",
-    "@types/chai-http": "^0.0.30",
-    "@types/jest": "^23.3.13",
-    "@types/mocha": "^2.2.40",
-    "axios": "^0.16.2",
-    "chai": "^3.5.0",
-    "growl": "^1.10.5",
-    "jest": "^23.0.0",
-    "jest-config": "^24.0.0",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
-    "rimraf": "^2.6.3",
-    "ts-jest": "^23.10.5",
-    "ts-loader": "^5.3.3",
-    "typescript": "^2.5.0",
-    "vue": "^2.5.22",
+  "dependencies": {
     "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "jest": "^26.6.3",
+    "rollup": "^2.38.0",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "ts-jest": "^26.4.4",
+    "tslib": "^2.1.0",
+    "typescript": "^4.1.3",
+    "vue": "^2.5.22"
   },
   "repository": {
     "type": "git",
@@ -47,22 +41,9 @@
   },
   "homepage": "https://github.com/mrcrowl/vuex-typex#readme",
   "scripts": {
-    "clean": "rimraf dist",
-    "compile": "tsc --pretty",
-    "build": "npm run clean && npm run compile && rimraf dist/examples && rimraf dist/tests",
-    "COMMENTS": "\"test-only\": \"mocha --recursive dist/**/*.spec.js\",",
+    "typecheck": "tsc --noEmit",
+    "build": "rollup --config -m",
     "test:unit": "jest",
     "test": "npm run test:unit"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "test-jest"
-    },
-    "testURL": "http://localhost/",
-    "testRegex": "src/tests/.*\\.spec.ts$"
   }
 }

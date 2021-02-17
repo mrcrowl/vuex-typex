@@ -1,8 +1,7 @@
-import { expect } from "chai";
 import Vue from "vue";
 import * as Vuex from "vuex";
 import { Store } from "vuex";
-import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../index";
+import { getStoreBuilder, ModuleBuilder, StoreBuilder } from "../src/index";
 
 interface PluginState { age: number }
 
@@ -38,8 +37,8 @@ describe("Create a store", () =>
             commitIncrease()
             commitDecrease()
 
-            expect(log.length).to.eq(2)
-            expect(log).to.deep.equal(["pluggy/increase", "pluggy/decrease"])
+            expect(log.length).toBe(2)
+            expect(log).toEqual(["pluggy/increase", "pluggy/decrease"])
         })
     })
 })

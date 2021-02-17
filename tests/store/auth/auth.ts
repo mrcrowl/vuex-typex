@@ -1,10 +1,7 @@
 
-import Vuex from "vuex"
-import { ModuleBuilder } from "../../.."
 import { AuthState } from "./state"
 import { RootState } from "../index"
-import { Module } from "vuex"
-import { getStoreBuilder } from "../../.."
+import { getStoreBuilder } from "../../../src"
 
 const initialState: AuthState = {
     userID: "b6c8185c6d0af2f5d968",

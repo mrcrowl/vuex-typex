@@ -1,7 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ES2015",
         "moduleResolution": "node",
         "lib": [
             "dom",
@@ -18,16 +18,19 @@
         "esModuleInterop": true,
         "target": "es5",
         "sourceMap": true,
-        "outDir": "./dist",
         "declaration": true,
+        "declarationDir": "./dist",
         "removeComments": false,
         "skipLibCheck": true,
-        "typeRoots": [
-            "./node_modules/@types"
+        "types" : [
+            "jest",
+            "vuex"
         ]
     },
     "include": [
-        "src"
+        "src",
+        "tests",
+        "examples"
     ],
     "exclude": [
         "node_modules"

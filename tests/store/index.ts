@@ -1,5 +1,5 @@
 
-import { getStoreBuilder } from "../.."
+import { getStoreBuilder } from "../../src"
 import { AuthState } from "./auth/state";
 import { BirthdayState } from "./birthday/state"
 import { Store } from "vuex"
