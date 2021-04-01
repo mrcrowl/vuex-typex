@@ -2,6 +2,7 @@ import { Module, Plugin, Store, StoreOptions } from "vuex";
 export declare type MutationHandler<S, P> = (state: S, payload: P) => void;
 export declare type ActionHandler<S, R, G, P, T> = (context: BareActionContext<S, R, G>, payload: P) => Promise<T> | T;
 export declare type GetterHandler<S, R, G, T> = (state: S, getters: G, rootState: R) => T;
+declare type Promisify<T> = T extends PromiseLike<any> ? T : Promise<T>;
 export interface BareActionContext<S, R, G = any> {
     state: S;
     rootState: R;
@@ -24,12 +25,12 @@ export interface ModuleBuilder<S, R = {}, G = any> {
     /** Creates a strongly-typed dispatch function for the provided action handler */
     dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>): () => Promise<void>;
     dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>): (payload: P) => Promise<void>;
-    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>): () => Promise<T>;
-    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>): (payload: P) => Promise<T>;
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>): () => Promisify<T>;
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>): (payload: P) => Promisify<T>;
     dispatch<P, T>(handler: ActionHandler<S, R, G, void, void>, name: string): () => Promise<void>;
     dispatch<P, T>(handler: ActionHandler<S, R, G, P, void>, name: string): (payload: P) => Promise<void>;
-    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>, name: string): () => Promise<T>;
-    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>, name: string): (payload: P) => Promise<T>;
+    dispatch<P, T>(handler: ActionHandler<S, R, G, void, T>, name: string): () => Promisify<T>;
+    dispatch<P, T>(handler: ActionHandler<S, R, G, P, T>, name: string): (payload: P) => Promisify<T>;
     /** Creates a strongly-typed read function for the provided getter function */
     read<T>(handler: GetterHandler<S, R, G, T>): () => T;
     read<T>(handler: GetterHandler<S, R, G, T>, name: string): () => T;
@@ -59,12 +60,12 @@ export interface StoreBuilder<R> {
     /** Creates a strongly-typed dispatch function for the provided action handler */
     dispatch<P, T>(handler: ActionHandler<R, R, void, void, void>): () => Promise<void>;
     dispatch<P, T>(handler: ActionHandler<R, R, void, P, void>): (payload: P) => Promise<void>;
-    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>): () => Promise<T>;
-    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>): (payload: P) => Promise<T>;
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>): () => Promisify<T>;
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>): (payload: P) => Promisify<T>;
     dispatch<P, T>(handler: ActionHandler<R, R, void, void, void>, name: string): () => Promise<void>;
     dispatch<P, T>(handler: ActionHandler<R, R, void, P, void>, name: string): (payload: P) => Promise<void>;
-    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>, name: string): () => Promise<T>;
-    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>, name: string): (payload: P) => Promise<T>;
+    dispatch<P, T>(handler: ActionHandler<R, R, void, void, T>, name: string): () => Promisify<T>;
+    dispatch<P, T>(handler: ActionHandler<R, R, void, P, T>, name: string): (payload: P) => Promisify<T>;
     /** Creates a strongly-typed read function for the provided getter function */
     read<T>(handler: GetterHandler<R, R, void, T>): () => T;
     read<T>(handler: GetterHandler<R, R, void, T>, name: string): () => T;
@@ -79,3 +80,4 @@ export interface StoreBuilder<R> {
 export declare function getStoreBuilder<R>(): StoreBuilder<R>;
 /** Get a reference to a named store builder */
 export declare function getStoreBuilder<R>(name: string): StoreBuilder<R>;
+export {};
