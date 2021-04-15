@@ -4,7 +4,7 @@ const useRootNamespace = { root: true }
 
 export type MutationHandler<S, P> = (state: S, payload: P) => void
 export type ActionHandler<S, R, G, P, T> = (context: BareActionContext<S, R, G>, payload: P) => Promise<T> | T
-export type GetterHandler<S, R, G, T> = (state: S, getters: G, rootState: R) => T
+export type GetterHandler<S, R, G, T> = (state: S, getters: G, rootState: R, rootGetters: any) => T
 type Promisify<T> = T extends PromiseLike<any> ? T : Promise<T>;
 
 
