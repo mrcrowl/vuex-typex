@@ -83,7 +83,7 @@ var ModuleBuilderImpl = /** @class */ (function () {
         if (!initialState && existingModule) {
             return existingModule;
         }
-        // both arguments: create a module        
+        // both arguments: create a module
         if (existingModule && initialState) {
             existingModule.setInitialState(initialState);
             return existingModule;
@@ -207,7 +207,7 @@ function getStoreBuilder(name) {
     if (!name) {
         return storeBuilderSingleton;
     }
-    // a named store builder    
+    // a named store builder
     var builder = namedStoreBuilderMap[name] || (namedStoreBuilderMap[name] = new StoreBuilderImpl());
     return builder;
 }
